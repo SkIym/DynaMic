@@ -1,2 +1,2 @@
 # Core 
-fastapi[standard]
+fastapi[standard] # includes httpx, jinja2, python-multipart, and uvicorn
