@@ -1,0 +1,9 @@
+from datetime import datetime
+from sqlmodel import Field, SQLModel
+
+class Buoy(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    deployed_latitude: float = Field(..., description="Latitude of the occurence")
+    deployed_longitude: float = Field(..., description="Longitude of the occurence")
+    deployed_at: datetime = Field(default=datetime.now(), nullable=False)
+    group_id: int = Field(foreign_key="survey_group.id", description="Id of the surveillance group the buoy belongs to")
