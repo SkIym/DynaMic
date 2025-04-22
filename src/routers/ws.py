@@ -1,1 +1,3 @@
-# WebSocket endpoints
+# WebSocket 
+
+# notify if explosion
