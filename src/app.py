@@ -10,6 +10,6 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-if __name__ == "__main__":
-    create_db_and_tables()
+# if __name__ == "__main__":
+#     create_db_and_tables()
 
