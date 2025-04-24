@@ -1,12 +1,22 @@
 from fastapi import APIRouter
 from schemas.survey_group import SurveyGroupRegister
+from sqlmodel import Session
+from db import engine
+from models.survey_group import Survey_Group
 
 router = APIRouter(
     prefix="/sgroup",
     tags=["sgroup"]
 )
 
-# Post buoy or register (latitude, longitude, id,)
-@router.post("/")
+# Register a group (latitude, longitude, name, radius)
+@router.post("/", response_model=Survey_Group)
 async def register_group(group: SurveyGroupRegister):
-    return group
+
+    new_group = Survey_Group(name=group.name, latitude=group.latitude, longitude=group.longitude, radius=group.radius)
+
+    with Session(engine) as session:
+        session.add(new_group)
+        session.commit()
+        session.refresh(new_group)
+        return new_group
