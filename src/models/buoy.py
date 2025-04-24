@@ -3,7 +3,7 @@ from sqlmodel import Field, SQLModel, Relationship
 from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
-    from .occurence import Occurrence
+    from .occurrence import Occurrence
     from .survey_group import SurveyGroup
 class Buoy(SQLModel, table=True):
     id: int = Field(primary_key=True, description="Id of the device")
