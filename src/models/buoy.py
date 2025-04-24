@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from .occurence import Occurrence
     from .survey_group import SurveyGroup
 class Buoy(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int = Field(primary_key=True, description="Id of the device")
     deployed_latitude: float = Field(..., description="Latitude of the occurence")
     deployed_longitude: float = Field(..., description="Longitude of the occurence")
     deployed_at: datetime = Field(default=datetime.now(), nullable=False)
