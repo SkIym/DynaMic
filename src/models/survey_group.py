@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
     from .buoy import Buoy
-class SurveyGroup(SQLModel, table=True):
+class Survey_Group(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(nullable=False, description="Name of the surveillance group")
     latitude: float = Field(..., description="Latitude of the occurence")
