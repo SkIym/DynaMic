@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from ..schemas.buoy import BuoyRegister
+from schemas.buoy import BuoyRegister
 
 router = APIRouter(
     prefix="/buoy",
