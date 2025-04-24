@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from db import create_db_and_tables
-from routers import buoy
+from routers import buoy, survey_group
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
 
 app.include_router(buoy.router)
+app.include_router(survey_group.router)
 
 @app.get("/")
 async def root():
