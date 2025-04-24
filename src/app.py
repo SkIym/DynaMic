@@ -1,10 +1,13 @@
 from fastapi import FastAPI
-from db import engine, SQLModel
+from .db import engine, SQLModel
+from .routers import buoy
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
+
+app.include_router(buoy.router)
 
 @app.get("/")
 async def root():
