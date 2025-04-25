@@ -10,12 +10,10 @@ router = APIRouter(
 )
 
 # Register a group (latitude, longitude, name, radius)
-@router.post("/", response_model=Survey_Group)
+@router.post("/create", response_model=Survey_Group)
 async def register_group(group: SurveyGroupRegister):
-
-    new_group = Survey_Group(**group.model_dump())
-
     with Session(engine) as session:
+        new_group = Survey_Group(**group.model_dump())
         session.add(new_group)
         session.commit()
         session.refresh(new_group)
