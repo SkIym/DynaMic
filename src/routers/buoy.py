@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 # Register a buoy (latitude, longitude, id,)
-@router.post("/create")
+@router.post("/create", response_model=Buoy)
 async def register_buoy(buoy: BuoyRegister):
     with Session(engine) as session:
 
