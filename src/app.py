@@ -1,15 +1,18 @@
 from fastapi import FastAPI
-from db import engine, SQLModel
+from db import create_db_and_tables
+from routers import buoy, survey_group, occurrence
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
+
+app.include_router(buoy.router)
+app.include_router(survey_group.router)
+app.include_router(occurrence.router)
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-# if __name__ == "__main__":
-#     create_db_and_tables()
-
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
