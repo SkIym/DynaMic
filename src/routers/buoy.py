@@ -6,12 +6,12 @@ from db import engine
 from services.survey_group import find_survey_group
 
 router = APIRouter(
-    prefix="/buoy",
+    prefix="/buoys",
     tags=["buoy"]
 )
 
 # Register a buoy (latitude, longitude, id,)
-@router.post("/create", response_model=Buoy)
+@router.post("", response_model=Buoy)
 async def register_buoy(buoy: BuoyRegister):
     with Session(engine) as session:
 

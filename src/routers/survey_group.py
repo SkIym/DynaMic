@@ -5,12 +5,12 @@ from db import engine
 from models.survey_group import Survey_Group
 
 router = APIRouter(
-    prefix="/sgroup",
-    tags=["sgroup"]
+    prefix="/survey-groups",
+    tags=["survey-group"]
 )
 
 # Register a group (latitude, longitude, name, radius)
-@router.post("/create", response_model=Survey_Group)
+@router.post("", response_model=Survey_Group)
 async def register_group(group: SurveyGroupRegister):
     with Session(engine) as session:
         new_group = Survey_Group(**group.model_dump())
