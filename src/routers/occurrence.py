@@ -1,12 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, HTTPException
 from schemas.occurrence import OccurrenceCreate
 from models.occurrence import Occurrence
 from sqlmodel import Session, select
 from db import engine
 from services.buoy import registered_buoy
-from dependencies import get_templates
 
 router = APIRouter(
     prefix="/occurrences",
@@ -43,15 +40,6 @@ async def get_all_occurrences():
         results = session.exec(query)
         occurrences = results.all()
         return occurrences
-
-@router.get("/map", response_class=HTMLResponse)
-async def occurrences_dashboard(
-    request: Request,
-    templates: Jinja2Templates = Depends(get_templates)
-):
-    return templates.TemplateResponse(
-        request=request, name="occurrences.html"
-    )
 
 
     
