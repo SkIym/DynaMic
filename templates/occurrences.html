@@ -12,7 +12,7 @@
     <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
-            const map = L.map('map').setView([14.655030133202263, 121.06491181310288], 13); // set Oblation as default
+            const map = L.map('map').setView([14.655030133202263, 121.06491181310288], 15); // set Oblation as default
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
