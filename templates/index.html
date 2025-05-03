@@ -20,15 +20,31 @@
 
             const data = await fetchOccurrences();
             const baseIntensity = 0.6;
-
+            
+            // heat layer
             var heat = L.heatLayer(
                 data.map((i) => [i.latitude, i.longitude, baseIntensity]), 
-                {   radius: 30,
+                {   
+                    radius: 30,
                     minOpacity: 0.4,
                 })
                     .addTo(map);
-  
-            console.log(data)
+            
+            // popups
+            var popups = data.map((i) => {
+                return L.circleMarker(
+                    [i.latitude, i.longitude],
+                    {
+                        opacity: 0,
+                        radius: 20,
+                        weight: 0,
+                        fillOpacity: 0
+                    }
+                )
+                    .bindPopup(`<p>Date: ${i.date} <br/> Time: ${i.time} </p>`)
+                    .addTo(map)
+            })
+
         });
     </script>
 </body>
