@@ -5,6 +5,7 @@ from sqlmodel import Session, select
 from db import engine
 from services.buoy import registered_buoy
 from services.occurrence import to_display
+from datetime import datetime
 
 router = APIRouter(
     prefix="/occurrences",
@@ -26,6 +27,7 @@ async def register_explosion(
 
         new_occur = Occurrence(
             **occ.model_dump(),
+            created_at=datetime.now(),
             buoy_id=buoy_id
         )
 
