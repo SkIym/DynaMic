@@ -19,29 +19,37 @@
             }).addTo(map);
 
             const data = await fetchOccurrences();
+            
+            
+            // heat layer, can adjust base intensity
             const baseIntensity = 0.6;
-            
-            // heat layer
-            var heat = L.heatLayer(
-                data.map((i) => [i.latitude, i.longitude, baseIntensity]), 
-                {   
-                    radius: 30,
-                    minOpacity: 0.4,
-                })
-                    .addTo(map);
-            
-            // popups
-            var popups = data.map((i) => {
-                return L.circleMarker(
-                    [i.latitude, i.longitude],
-                    {
-                        opacity: 0,
-                        radius: 20,
-                        weight: 0,
-                        fillOpacity: 0
+            var heat = L
+                .heatLayer(
+                    data.map((i) => [i.latitude, i.longitude, baseIntensity]), 
+                    {   
+                        radius: 30,
+                        minOpacity: 0.4,
+                        // adjust style of the heat blobs here, see leaflet docs for options
                     }
                 )
-                    .bindPopup(`<p>Date: ${i.date} <br/> Time: ${i.time} </p>`)
+                .addTo(map);
+            
+            // popups, shows time and date of the occurrences when clicked
+            var popups = data.map((i) => {
+                return L
+                    .circleMarker(
+                        [i.latitude, i.longitude],
+                        {
+                            opacity: 0,
+                            radius: 20,
+                            weight: 0,
+                            fillOpacity: 0
+                        }
+                    )
+                    .bindPopup(
+                        `<p>Date: ${i.date} <br/> Time: ${i.time} </p>`
+                        // can add className option here for styling, see leaflet docs
+                    ) 
                     .addTo(map)
             })
 
