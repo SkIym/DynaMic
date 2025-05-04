@@ -8,7 +8,7 @@ def to_display(occs: Sequence[Occurrence]) -> list[OccurrenceDisplay]:
     formatted_occs = map(
         lambda occ: OccurrenceDisplay(
             date=occ.created_at.strftime("%A, %B %d %Y"),
-            time=occ.created_at.strftime("%I:%M %p"),
+            time=occ.created_at.strftime("%I:%M:%S %p"),
             latitude=occ.latitude,
             longitude=occ.longitude
         ),
