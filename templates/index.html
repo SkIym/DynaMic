@@ -24,18 +24,6 @@
             const data = await fetchOccurrences();
             const blobSize = 20;
             const highlightColor = "#FF2400"
-            
-            // markerclustergroup to handle overlapping circle markers
-            var markers = L.markerClusterGroup({
-                spiderLegPolylineOptions: {
-                    weight: 5,
-                    color: highlightColor,
-                    opacity: 1,
-                    dashOffset: 10
-                },
-                maxClusterRadius: blobSize,
-                zoomToBoundsOnClick: true
-            });
                         
             // heat layer, can adjust base intensity
             const baseIntensity = 0.6;
@@ -49,8 +37,21 @@
                     }
                 )
                 .addTo(map);
+            
+            // markerclustergroup to handle overlapping circle markers, will spiderfy
+            var markers = L.markerClusterGroup({
+                spiderLegPolylineOptions: {
+                    weight: 5,
+                    color: highlightColor,
+                    opacity: 1,
+                    dashOffset: 10
+                },
+                maxClusterRadius: blobSize,
+                showCoverageOnHover: false,
+            });
 
-            // popups, shows time and date of the occurrences when clicked
+            // circle markers over heat blobs, shows time and date of the occurrences when clicked
+            const allMarkers = [];
             var circleMarkers = data.map((i) => {
                 var circle = L
                     .circleMarker(
@@ -67,6 +68,7 @@
                         // can add className option here for styling, see leaflet docs
                     ) 
                     .addTo(map)
+                allMarkers.push(circle)
                 markers.addLayer(circle)   
             })
 
@@ -75,15 +77,39 @@
 
             // Make circle markers opaque upon clicking on parent cluster
             markers.on('clusterclick', (cluster) => {
+                resetAllMarkers()
                 const childMarkers = cluster.layer.getAllChildMarkers()
                 childMarkers.forEach(m => {
-                    m.options.opacity = 0.2
-                    m.options.weight = 1
-                    m.options.fillOpacity = 0.2
-                    m.options.color = highlightColor 
+                    m.setStyle({
+                        opacity: 0.2,
+                        weight: 1,
+                        fillOpacity: 0.2,
+                        color: highlightColor 
+                    })
+
+                    if (m._renderer) {
+                        m._renderer._updateCircle(m);
+                    }
                 })
+
             })
 
+            map.on("click", resetAllMarkers)
+
+            // To reset markers
+            function resetAllMarkers() {
+                allMarkers.forEach(m => {
+                    m.setStyle({
+                        opacity: 0,
+                        weight: 0,
+                        fillOpacity: 0
+                    });
+                    
+                    if (m._renderer) {
+                        m._renderer._updateCircle(m);
+                    }
+                });
+            }
         });
     </script>
 </body>
