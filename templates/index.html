@@ -5,16 +5,19 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster.list@0.4.4/dist/leaflet-markercluster-list.css"></link>
 </head>
 <body>
     <h1>Map of explosions</h1>
-    <div id="map" style="height: 500px; width: 100%;"></div>
+    <div id="map" style="height: 600px; width: 100%;"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster.list@0.4.4/dist/leaflet-markercluster-list.src.js"></script>
     <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
+            
             const map = L.map('map').setView([14.650983264532163, 121.06718461639298], 16); // default center
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -38,17 +41,65 @@
                 )
                 .addTo(map);
             
+            
             // markerclustergroup to handle overlapping circle markers, will spiderfy
-            var markers = L.markerClusterGroup({
-                spiderLegPolylineOptions: {
-                    weight: 5,
-                    color: highlightColor,
-                    opacity: 0.2,
-                    dashOffset: 10
-                },
-                maxClusterRadius: blobSize,
-                showCoverageOnHover: false,
-            });
+
+            // var markers = L
+            //     .markerClusterGroup({
+            //         showCoverageOnHover: false,
+            //         spiderLegPolylineOptions: {
+            //             weight: 5,
+            //             color: highlightColor,
+            //             opacity: 0.2,
+            //             dashOffset: 10
+            //         },
+            //         maxClusterRadius: blobSize,
+            //     })
+            
+            // markerclustergroup to handle overallping circle markers, will show a list
+
+            var markers = L
+                .markerClusterGroup
+                .withList({
+                    labelFn: function(el, ei, cluster) {
+                        return "<p>[" + ei + "] " + el.options.listText + "</p>";
+                    },
+                    headerFn: function(els, cluster) {
+                        return "<p>Explosions within selected cluster: </p>";
+                    },
+                    sortFn: function(m1, m2) {
+                        return m1.options.id > m2.options.id ? 1 : -1;
+                    },
+                    showHeader: true,
+                    sidePanel: true,
+                    list: true,
+                    sidePanelWidth: 40,
+                    showCoverageOnHover: false,
+                    spiderLegPolylineOptions: {
+                        weight: 5,
+                        color: highlightColor,
+                        opacity: 0.2,
+                        dashOffset: 10
+                    },
+                    maxClusterRadius: blobSize,
+                    iconCreateFunction: function(cluster) {
+                        var childCount = cluster.getChildCount()
+                        var c = ' marker-cluster-';
+                        if (childCount < 3) {
+                            c += 'small';
+                        } else if (childCount < 5) {
+                            c += 'medium';
+                        } else {
+                            c += 'large';
+                        }
+                        return new L
+                        .DivIcon({ 
+                            html: '<div><span>' + childCount + '</span></div>', 
+                            iconSize: new L.Point(40, 40),
+                            className: 'marker-cluster' + c
+                        });
+                    }
+                })
 
             // circle markers over heat blobs, shows time and date of the occurrences when clicked
             const allMarkers = [];
@@ -60,7 +111,8 @@
                             opacity: 0,
                             radius: blobSize,
                             weight: 0,
-                            fillOpacity: 0
+                            fillOpacity: 0,
+                            listText: `Date: ${i.date} ------ Time: ${i.time} ----- Lat: ${i.latitude} ----- Lng: ${i.longitude}`
                         }
                     )
                     .bindPopup(
@@ -91,7 +143,7 @@
                         m._renderer._updateCircle(m);
                     }
                 })
-
+                cluster.layer.spiderfy()
             })
 
             map.on("click", resetAllMarkers)
@@ -109,6 +161,7 @@
                         m._renderer._updateCircle(m);
                     }
                 });
+                
             }
         });
     </script>
