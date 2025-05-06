@@ -4,6 +4,8 @@ from models.buoy import Buoy
 from sqlmodel import Session
 from db import engine
 from services.survey_group import find_survey_group
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 router = APIRouter(
     prefix="/buoys",
@@ -29,6 +31,7 @@ async def register_buoy(buoy: BuoyRegister):
 
         new_buoy = Buoy(
             **buoy.model_dump(),
+            deployed_at=datetime.now(ZoneInfo("Asia/Manila")),
             group_id=group_id
         )
 
