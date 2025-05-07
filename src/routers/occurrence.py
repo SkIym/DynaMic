@@ -42,5 +42,3 @@ async def get_all_occurrences():
         occurrences = results.all()
 
         return to_display(occurrences)
-
-    

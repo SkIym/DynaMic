@@ -5,3 +5,7 @@ class SurveyGroupRegister(BaseModel):
     latitude: float
     longitude: float
     radius: float
+
+class SurveyGroupDisplay(BaseModel):
+    id: int | None
+    name: str
