@@ -14,13 +14,11 @@ router = APIRouter(
 )
 
 # Register an explosion (latitude, longitude, id,)
-@router.post("/{buoy_id}", response_model=Occurrence)
-async def register_explosion(
-    buoy_id: int,
-    occ: OccurrenceCreate):
+@router.post("", response_model=Occurrence)
+async def register_explosion(occ: OccurrenceCreate):
     with Session(engine) as session:
 
-        if not registered_buoy(session, buoy_id):
+        if not registered_buoy(session, occ.buoy_id):
             raise HTTPException(
                 status_code=400,
                 detail="Device is not yet registered in the system"
@@ -28,8 +26,7 @@ async def register_explosion(
 
         new_occur = Occurrence(
             **occ.model_dump(),
-            created_at=datetime.now(ZoneInfo("Asia/Manila")),
-            buoy_id=buoy_id
+            created_at=datetime.now(ZoneInfo("Asia/Manila"))
         )
 
         session.add(new_occur)
@@ -45,5 +42,3 @@ async def get_all_occurrences():
         occurrences = results.all()
 
         return to_display(occurrences)
-
-    
