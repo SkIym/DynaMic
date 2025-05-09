@@ -7,6 +7,7 @@ from services.buoy import registered_buoy
 from services.occurrence import to_display
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from .survey_group import get_occurrences_per_group
 
 router = APIRouter(
     prefix="/occurrences",
@@ -35,10 +36,16 @@ async def register_explosion(occ: OccurrenceCreate):
         return new_occur
     
 @router.get("", response_model=list[OccurrenceDisplay])
-async def get_all_occurrences(time: str = "", group: int = 1):
-    with Session(engine) as session:
-        query = select(Occurrence)
-        results = session.exec(query)
-        occurrences = results.all()
+async def get_occurrences(start_date: str | None = None, group: int | None = None):
 
-        return to_display(occurrences)
+    if group:
+        occurrences = await get_occurrences_per_group(group)
+        return occurrences
+    
+    else:
+        with Session(engine) as session:
+            query = select(Occurrence)
+            results = session.exec(query)
+            occurrences = results.all()
+
+            return to_display(occurrences)
