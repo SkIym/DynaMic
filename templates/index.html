@@ -20,33 +20,38 @@
     <!-- Leaflet List -->
     <script src="https://unpkg.com/leaflet.markercluster.list@0.4.4/dist/leaflet-markercluster-list.src.js"></script>
 
+    <!--  -->
+    <script src="{{ url_for('static', path='js/loadMap.js') }}" defer></script>
+
 </head>
 <body>
     <h1>Map of explosions</h1>
 
-    <div>
-        <label for="time-select">Time</label>
-        <select name="times" id="time-select">
-            <option value="">All Time</option>
-            <option value="past-hour">Past Hour</option>
-            <option value="past-24">Past 24 Hours</option>
-            <option value="past-week">Past Week</option>
-            <option value="past-month">Past Month</option>
-        </select>
-    </div>
-
-    <div>
-        <label for="group-select">Survey Groups</label>
-        <select name="groups" id="group-select">
-            {% for grp in groups %}
-                <option value="{{ grp.id }}">{{ grp.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
+    <form id="form">
+        <div>
+            <label for="time-select">Time</label>
+            <select name="time" id="time-select">
+                <option value="all-time">All Time</option>
+                <option value="past-hour">Past Hour</option>
+                <option value="past-24">Past 24 Hours</option>
+                <option value="past-week">Past Week</option>
+                <option value="past-month">Past Month</option>
+            </select>
+        </div>
+    
+        <div>
+            <label for="group-select">Survey Groups</label>
+            <select name="group" id="group-select" onselect>
+                {% for grp in groups %}
+                    <option value="{{ grp.id }}">{{ grp.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button>Submit</button>
+    </form>
 
     
     <div id="map" style="height: 600px; width: 100%;"></div>
     <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}"></script>
-    <script src="{{ url_for('static', path='js/loadMap.js') }}" defer></script>
 </body>
 </html>

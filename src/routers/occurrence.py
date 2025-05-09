@@ -35,7 +35,7 @@ async def register_explosion(occ: OccurrenceCreate):
         return new_occur
     
 @router.get("", response_model=list[OccurrenceDisplay])
-async def get_all_occurrences():
+async def get_all_occurrences(time: str = "", group: int = 1):
     with Session(engine) as session:
         query = select(Occurrence)
         results = session.exec(query)
