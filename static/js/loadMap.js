@@ -13,24 +13,24 @@ form.addEventListener('submit', async function(event) {
 
     switch (time) {
         case "past-hour":
-            startDate = dateNow.setHours(dateNow.getHours() - 1)
+            startDate = new Date(dateNow.setHours(dateNow.getHours() - 1))
             break;
         case "past-day":
-            startDate = dateNow.setHours(dateNow.getHours() - 24)
+            startDate = new Date(dateNow.setHours(dateNow.getHours() - 24))
             break;
         case "past-week":
-            startDate = dateNow.setHours(dateNow.getHours() - 168)
+            startDate = new Date(dateNow.setHours(dateNow.getHours() - 168))
             break;
         case "past-month":
-            startDate = dateNow.setMonth(dateNow.getMonth() - 1)
+            startDate = new Date(dateNow.setMonth(dateNow.getMonth() - 1))
             break;
         default:
-            startDate = ""
+            startDate = dateNow
             break;
     }
-
-    console.log(Date(startDate), group)
-    const data = await fetchOccurrences(startDate, group)
+    let startDateISO = startDate.toISOString()
+    console.log(startDateISO, group)
+    const data = await fetchOccurrences(startDateISO, group)
 
     // remove layers
     if (map) {
