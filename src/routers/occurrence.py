@@ -36,7 +36,7 @@ async def register_explosion(occ: OccurrenceCreate):
         return new_occur
     
 @router.get("", response_model=list[OccurrenceDisplay])
-async def get_occurrences(start_date: str | None = None, group: int | None = None):
+async def get_occurrences(start_date: str = "", group: int = 0):
 
     if group:
         occurrences = await get_occurrences_per_group(group)
