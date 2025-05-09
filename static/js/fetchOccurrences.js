@@ -1,9 +1,18 @@
-async function fetchOccurrences(time = 'all-time', group = 1) {
+async function fetchOccurrences(start_date = "", group = 0) {
     try {
-        const response = await fetch(`/occurrences?time=${time}&group=${group}`)
+
+        const response = await fetch("/occurrences?" + new URLSearchParams({
+                start_date: start_date,
+                group: group
+            })
+        )
+
         const data = await response.json()
         
-        console.log(data)
+        console.log(new URLSearchParams({
+            start_date: start_date,
+            group: group
+        }))
         return data
     }
     catch (error) {
