@@ -25,7 +25,7 @@ form.addEventListener('submit', async function(event) {
             startDate = new Date(dateNow.setMonth(dateNow.getMonth() - 1))
             break;
         default:
-            startDate = dateNow
+            startDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
             break;
     }
     let startDateISO = startDate.toISOString()
@@ -43,7 +43,9 @@ async function loadMap(data = null) {
 
     // initial data
     if (data == null) {
-        data = await fetchOccurrences()
+        let startDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
+        let startDateISO = startDate.toISOString()
+        data = await fetchOccurrences(startDateISO, 0)
     }
     
     // initial map
