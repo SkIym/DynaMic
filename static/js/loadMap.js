@@ -1,4 +1,14 @@
-document.addEventListener('DOMContentLoaded', async function() {
+const form = document.getElementById('form')
+form.addEventListener('submit', async function(event) {
+    event.preventDefault()
+    const formData = new FormData(form)
+    console.log(Object.fromEntries(formData))
+
+    const data = await fetchOccurrences(formData.get('time'), parseInt(formData.get('group')))
+    loadMap(data)
+})
+
+async function loadMap(data) {
     
     const map = L.map('map').setView([14.650983264532163, 121.06718461639298], 16); // default center
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -6,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         maxZoom: 18
     }).addTo(map);
 
-    const data = await fetchOccurrences();
     const blobSize = 20;
     const highlightColor = "#FF2400"
                 
@@ -128,4 +137,4 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         
     }
-});
+}
