@@ -62,19 +62,19 @@ async function loadMap(data = null) {
     const highlightColor = "#FF2400"
                 
     // heat layer, can adjust base intensity
-    const baseIntensity = 0.6;
-    var heat = L
+    const baseIntensity = 0.9;
+    let heat = L
         .heatLayer(
             data.map((i) => [i.latitude, i.longitude, baseIntensity]), 
             {   
                 radius: blobSize,
-                minOpacity: 0.4,
+                minOpacity: 0.7,
                 // adjust style of the heat blobs here, see leaflet docs for options
             }
         )
         .addTo(map);
 
-    var markers = L
+    let markers = L
         .markerClusterGroup
         .withList({
             labelFn: function(el, ei, cluster) {
@@ -99,8 +99,8 @@ async function loadMap(data = null) {
             },
             maxClusterRadius: blobSize,
             iconCreateFunction: function(cluster) {
-                var childCount = cluster.getChildCount()
-                var c = ' marker-cluster-';
+                let childCount = cluster.getChildCount()
+                let c = ' marker-cluster-';
                 if (childCount < 3) {
                     c += 'small';
                 } else if (childCount < 5) {
@@ -119,8 +119,8 @@ async function loadMap(data = null) {
 
     // circle markers over heat blobs, shows time and date of the occurrences when clicked
     const allMarkers = [];
-    var circleMarkers = data.map((i) => {
-        var circle = L
+    let circleMarkers = data.map((i) => {
+        let circle = L
             .circleMarker(
                 [i.latitude, i.longitude],
                 {
