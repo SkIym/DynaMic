@@ -7,7 +7,7 @@ from services.buoy import registered_buoy
 from services.occurrence import to_display
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from services.survey_group import get_occurrences_per_group
+from services.occurrence import get_occurrences_per_group
 
 router = APIRouter(
     prefix="/occurrences",

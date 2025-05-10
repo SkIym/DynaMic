@@ -1,11 +1,7 @@
 from geopy.distance import great_circle
 from sqlmodel import Session, select
 from models.survey_group import Survey_Group
-from schemas.occurrence import OccurrenceDisplay
-from models.buoy import Buoy
-from services.occurrence import to_display
-from datetime import datetime
-from zoneinfo import ZoneInfo
+
 
 def find_survey_group(session: Session, buoy_lat: float, buoy_long: float) -> int | None:
     with session:
@@ -23,15 +19,3 @@ def find_survey_group(session: Session, buoy_lat: float, buoy_long: float) -> in
         
         return None
     
-async def get_occurrences_per_group(iso_date: datetime, id: int, session: Session) -> list[OccurrenceDisplay]:
-    with session:
-
-        query = select(Buoy).where(Buoy.group_id == id)
-        results = session.exec(query)
-        buoys = results.all()
-
-        occurrences: list[OccurrenceDisplay] = []
-        for buoy in buoys:
-            occurrences.extend(to_display(buoy.occurrences))
-        
-        return occurrences
