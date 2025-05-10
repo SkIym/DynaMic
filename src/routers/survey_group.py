@@ -3,9 +3,6 @@ from schemas.survey_group import SurveyGroupRegister, SurveyGroupDisplay
 from sqlmodel import Session, select
 from db import engine
 from models.survey_group import Survey_Group
-from schemas.occurrence import OccurrenceDisplay
-from models.buoy import Buoy
-from services.occurrence import to_display
 
 router = APIRouter(
     prefix="/survey-groups",
@@ -31,16 +28,3 @@ async def get_all_groups():
 
         return groups
 
-@router.get("/{id}/occurrences", response_model=list[OccurrenceDisplay])
-async def get_occurrences_per_group(id: int):
-    with Session(engine) as session:
-
-        query = select(Buoy).where(Buoy.group_id == id)
-        results = session.exec(query)
-        buoys = results.all()
-
-        occurrences: list[OccurrenceDisplay] = []
-        for buoy in buoys:
-            occurrences.extend(to_display(buoy.occurrences))
-        
-        return occurrences

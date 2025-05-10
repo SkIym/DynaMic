@@ -3,6 +3,8 @@
     <title>DynaMic</title>
     <!-- CSS -->
     <link href="{{ url_for('static', path='css/index.css') }}" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
@@ -20,11 +22,46 @@
     <!-- Leaflet List -->
     <script src="https://unpkg.com/leaflet.markercluster.list@0.4.4/dist/leaflet-markercluster-list.src.js"></script>
 
+    <!--  -->
+    <script src="{{ url_for('static', path='js/loadMap.js') }}" defer>
+    </script>
+
 </head>
 <body>
-    <h1>Map of explosions</h1>
-    <div id="map" style="height: 600px; width: 100%;"></div>
-    <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}"></script>
-    <script src="{{ url_for('static', path='js/loadMap.js') }}" defer></script>
+  <main class="main">
+    <h1 id="title">Map of explosions</h1>
+    <form id="form">
+      <div >
+        <div class="select-group">
+          <label for="time-select">Time:</label>
+          <select name="time" id="time-select">
+              <option value="all-time">All Time</option>
+              <option value="past-hour">Past Hour</option>
+              <option value="past-day">Past 24 Hours</option>
+              <option value="past-week">Past Week</option>
+              <option value="past-month">Past Month</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label for="group-select">Survey Groups:</label>
+          <select name="group" id="group-select" onselect>
+              <option value="0">All Groups</option>
+              {% for grp in groups %}
+                  <option value="{{ grp.id }}">{{ grp.name }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+      <button>Submit</button>
+    </form>
+    <div id="map"></div>
+  </main>
+  <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}">
+  </script>
+  <script>
+      document.addEventListener("DOMContentLoaded", async function() {
+          await loadMap(null)
+      })
+  </script>
 </body>
 </html>

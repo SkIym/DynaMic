@@ -2,6 +2,7 @@ from geopy.distance import great_circle
 from sqlmodel import Session, select
 from models.survey_group import Survey_Group
 
+
 def find_survey_group(session: Session, buoy_lat: float, buoy_long: float) -> int | None:
     with session:
 
@@ -17,3 +18,4 @@ def find_survey_group(session: Session, buoy_lat: float, buoy_long: float) -> in
                 return group.id
         
         return None
+    
