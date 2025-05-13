@@ -8,11 +8,7 @@ async function fetchOccurrences(iso_start_date = "", group = 0) {
         )
 
         const data = await response.json()
-        
-        console.log(new URLSearchParams({
-            iso_start_date: iso_start_date,
-            group: group
-        }))
+ 
         return data
     }
     catch (error) {

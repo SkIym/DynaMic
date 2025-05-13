@@ -4,7 +4,6 @@ const form = document.getElementById('form')
 form.addEventListener('submit', async function(event) {
     event.preventDefault()
     const formData = new FormData(form)
-    console.log(Object.fromEntries(formData))
 
     const time = formData.get("time")
     let group = parseInt(formData.get("group")) 
@@ -29,7 +28,7 @@ form.addEventListener('submit', async function(event) {
             break;
     }
     let startDateISO = startDate.toISOString()
-    console.log(startDateISO, group)
+
     const data = await fetchOccurrences(startDateISO, group)
 
     // remove layers
@@ -128,7 +127,7 @@ async function loadMap(data = null) {
                     radius: blobSize,
                     weight: 0,
                     fillOpacity: 0,
-                    listText: `Date: ${i.date} ------ Time: ${i.time} ----- Lat: ${i.latitude} ----- Lng: ${i.longitude}`
+                    listText: `Date: ${i.date} | Time: ${i.time} | Lat: ${i.latitude.toFixed(6)} | Lng: ${i.longitude.toFixed(6)}`
                 }
             )
             .bindPopup(
