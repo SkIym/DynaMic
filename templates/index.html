@@ -22,9 +22,12 @@
     <!-- Leaflet List -->
     <script src="https://unpkg.com/leaflet.markercluster.list@0.4.4/dist/leaflet-markercluster-list.src.js"></script>
 
-    <!--  -->
+    <!-- Map loading -->
     <script src="{{ url_for('static', path='js/loadMap.js') }}" defer>
     </script>
+
+    <!-- WebSocket -->
+     <!-- <script src="{{ url_for('static', path='js/socket.js') }}" defer></script> -->
 
 </head>
 <body>
@@ -57,6 +60,8 @@
     <div id="map"></div>
   </main>
   <script src="{{ url_for('static', path='js/fetchOccurrences.js') }}">
+  </script>
+  <script src="{{ url_for('static', path='js/socket.js') }}">
   </script>
   <script>
       document.addEventListener("DOMContentLoaded", async function() {
