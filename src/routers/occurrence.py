@@ -8,6 +8,7 @@ from services.occurrence import to_display
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from services.occurrence import get_occurrences_per_group
+from .ws import manager
 
 router = APIRouter(
     prefix="/occurrences",
@@ -33,6 +34,9 @@ async def register_explosion(occ: OccurrenceCreate):
         session.add(new_occur)
         session.commit()
         session.refresh(new_occur)
+
+        await manager.send(f"Explosion at {new_occur.buoy.survey_group.name}")
+
         return new_occur
     
 @router.get("", response_model=list[OccurrenceDisplay])
