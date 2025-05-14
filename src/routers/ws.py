@@ -21,7 +21,7 @@ class ConnectionManager:
         except WebSocketException:
             print(f"Unexpected error: {WebSocketException}")
         finally:
-            self.active_connections.remove(websocket)
+            self.active_connections.discard(websocket)
 
     async def send(self, message: str):
         for conn in self.active_connections:
