@@ -44,3 +44,54 @@ select, option {
     display: inline-flex;
     flex-direction: column;
 }
+
+/* Modified leaflet classes */
+
+.cluster-list-header p {
+    padding: 10px;
+}
+
+.cluster-list-row td p{
+    padding: 5px;
+}
+
+.markercluster-list {
+    background-color: rgb(255, 246, 235);
+}
+
+.markercluster-list:has(div) {
+    border-radius: 5px;
+    border: 1px dashed black;
+}
+
+.markercluster-list .table-wrapper table tbody tr.cluster-list-row-even {
+    background-color: antiquewhite;
+    border-color: black;
+}
+
+.markercluster-list .table-wrapper table tbody tr.cluster-list-row-odd {
+    background-color: rgb(255, 246, 235);
+    border-color: black;
+}
+
+table {
+    background-color: rgb(255, 246, 235);
+    font-size: 0.9em;
+}
+
+.table-wrapper {
+    margin-right: 0;
+}
+
+.leaflet-popup-content-wrapper {
+    background-color: rgb(255, 246, 235);
+}
+
+.cluster-list-side-panel-button {
+    background-color: transparent;
+    color: #757575;
+    font-size: large;
+    text-align: center;
+    line-height: 12px;
+}
+
