@@ -1,43 +1,47 @@
 let map = null
+let defaultStartDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
 
-const form = document.getElementById('form')
-form.addEventListener('submit', async function(event) {
-    event.preventDefault()
-    const formData = new FormData(form)
-    console.log(Object.fromEntries(formData))
-
-    const time = formData.get("time")
-    let group = parseInt(formData.get("group")) 
+const getStartDate = (time) => {
     const dateNow = new Date()
-    let startDate = ""
-
     switch (time) {
         case "past-hour":
-            startDate = new Date(dateNow.setHours(dateNow.getHours() - 1))
-            break;
+            return new Date(dateNow.setHours(dateNow.getHours() - 1))
         case "past-day":
-            startDate = new Date(dateNow.setHours(dateNow.getHours() - 24))
-            break;
+            return new Date(dateNow.setHours(dateNow.getHours() - 24))
         case "past-week":
-            startDate = new Date(dateNow.setHours(dateNow.getHours() - 168))
-            break;
+            return new Date(dateNow.setHours(dateNow.getHours() - 168))
         case "past-month":
-            startDate = new Date(dateNow.setMonth(dateNow.getMonth() - 1))
-            break;
+            return new Date(dateNow.setMonth(dateNow.getMonth() - 1))
         default:
-            startDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
-            break;
+            return defaultStartDate
     }
-    let startDateISO = startDate.toISOString()
-    console.log(startDateISO, group)
-    const data = await fetchOccurrences(startDateISO, group)
+}
 
+const form = document.getElementById('form')
+
+const getQueryFromForm = (form) => {
+    const formData = new FormData(form)
+    const time = formData.get("time")
+    const group = parseInt(formData.get("group")) 
+    const startDateISO = getStartDate(time).toISOString()
+
+    return [startDateISO, group]
+}
+
+form.addEventListener('submit', async function(event) {
+    event.preventDefault()
+    await reloadMap()
+})
+
+const reloadMap = async () => {
+    const [startDateISO, group] = getQueryFromForm(form)
+    const data = await fetchOccurrences(startDateISO, group)
     // remove layers
     if (map) {
         map = map.remove()
     }
     loadMap(data)
-})
+}
 
 async function loadMap(data = null) {
 
@@ -128,7 +132,7 @@ async function loadMap(data = null) {
                     radius: blobSize,
                     weight: 0,
                     fillOpacity: 0,
-                    listText: `Date: ${i.date} ------ Time: ${i.time} ----- Lat: ${i.latitude} ----- Lng: ${i.longitude}`
+                    listText: `Date: ${i.date} | Time: ${i.time} | Lat: ${i.latitude.toFixed(6)} | Lng: ${i.longitude.toFixed(6)}`
                 }
             )
             .bindPopup(
