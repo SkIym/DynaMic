@@ -9,6 +9,7 @@ socket.onopen = () => {
 socket.onmessage = async (event) => {
     const message = event.data
     console.log(`Message received: ${message}`)
+    toast.error(message)
     await reloadMap()
 }
 
