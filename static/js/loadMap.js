@@ -34,6 +34,7 @@ form.addEventListener('change', async function(event) {
     await reloadMap()
 })
 
+
 const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
@@ -45,7 +46,6 @@ const reloadMap = async () => {
     if (map) {
 
         // retain zoom level and center if same group is being viewed, else reset
-        console.log(currentGroup, group)
         if (currentGroup === group ) {
             zoomLevel = map.getZoom()
             viewCenter = map.getCenter()
