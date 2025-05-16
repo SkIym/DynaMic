@@ -36,14 +36,22 @@ form.addEventListener('submit', async function(event) {
 const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
-    // remove layers
+    
+    let zoomLevel = 12
+    let viewCenter = [14.650983264532163, 121.06718461639298]
+
     if (map) {
+        // retain current center and zoom level when reloading
+        zoomLevel = map.getZoom()
+        viewCenter = map.getCenter()
+
+        // remove layers
         map = map.remove()
     }
-    loadMap(data)
+    loadMap(data, zoomLevel, viewCenter)
 }
 
-async function loadMap(data = null) {
+async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.650983264532163, 121.06718461639298]) {
 
     // initial data
     if (data == null) {
@@ -54,7 +62,7 @@ async function loadMap(data = null) {
     
     // initial map
     if (map==null) {
-        map = L.map('map').setView([14.650983264532163, 121.06718461639298], 12); // default center
+        map = L.map('map').setView(viewCenter, zoomLevel); // default center, and zoom level
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 18
