@@ -150,7 +150,7 @@ async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.65098326453
                 }
             )
             .bindPopup(
-                `<p>Date: ${i.date} <br/> Time: ${i.time} </p>`
+                `<p>Date: ${i.date} <br/> Time: ${i.time} <br/> Lat: ${i.latitude.toFixed(6)} <br/> Lng: ${i.longitude.toFixed(6)} </p>`
             ) 
             .addTo(map)
         allMarkers.push(circle)
