@@ -28,7 +28,7 @@ const getQueryFromForm = (form) => {
     return [startDateISO, group]
 }
 
-form.addEventListener('submit', async function(event) {
+form.addEventListener('change', async function(event) {
     event.preventDefault()
     await reloadMap()
 })
