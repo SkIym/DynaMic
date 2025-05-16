@@ -95,3 +95,7 @@ table {
     line-height: 12px;
 }
 
+.t-toast.t-red {
+    border-radius: 10px;
+    font-weight: bold;
+}
