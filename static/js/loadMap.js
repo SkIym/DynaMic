@@ -18,6 +18,7 @@ const getStartDate = (time) => {
 }
 
 const form = document.getElementById('form')
+let currentGroup = 'All Groups'
 
 const getQueryFromForm = (form) => {
     const formData = new FormData(form)
@@ -37,18 +38,22 @@ const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
     
+    
     let zoomLevel = 12
     let viewCenter = [14.650983264532163, 121.06718461639298]
 
     if (map) {
-        // retain current center and zoom level when reloading
-        zoomLevel = map.getZoom()
-        viewCenter = map.getCenter()
 
+        // retain zoom level and center if same group is being viewed, else reset
+        if (currentGroup === group) {
+            zoomLevel = map.getZoom()
+            viewCenter = map.getCenter()
+        }
         // remove layers
         map = map.remove()
     }
     loadMap(data, zoomLevel, viewCenter)
+    currentGroup = group
 }
 
 async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.650983264532163, 121.06718461639298]) {
