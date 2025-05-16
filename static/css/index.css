@@ -1,6 +1,7 @@
 /* style */
 
 * {
+    font-family: 'Source Sans Pro';
     margin: 0;
 }
 
@@ -21,7 +22,8 @@ main {
 }
 
 #map {
-    width: 100%;
+    width: 80%;
+    margin: auto auto;
     height: 75vh;
     border: 2px dashed;
     border-radius: 5px;
