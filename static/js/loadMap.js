@@ -18,7 +18,7 @@ const getStartDate = (time) => {
 }
 
 const form = document.getElementById('form')
-let currentGroup = 'All Groups'
+let currentGroup = 0
 
 const getQueryFromForm = (form) => {
     const formData = new FormData(form)
@@ -45,7 +45,8 @@ const reloadMap = async () => {
     if (map) {
 
         // retain zoom level and center if same group is being viewed, else reset
-        if (currentGroup === group) {
+        console.log(currentGroup, group)
+        if (currentGroup === group ) {
             zoomLevel = map.getZoom()
             viewCenter = map.getCenter()
         }
