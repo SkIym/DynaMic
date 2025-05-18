@@ -18,6 +18,7 @@ const getStartDate = (time) => {
 }
 
 const form = document.getElementById('form')
+let currentGroup = 0
 
 const getQueryFromForm = (form) => {
     const formData = new FormData(form)
@@ -28,22 +29,35 @@ const getQueryFromForm = (form) => {
     return [startDateISO, group]
 }
 
-form.addEventListener('submit', async function(event) {
+form.addEventListener('change', async function(event) {
     event.preventDefault()
     await reloadMap()
 })
 
+
 const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
-    // remove layers
+    
+    
+    let zoomLevel = 12
+    let viewCenter = [14.650983264532163, 121.06718461639298]
+
     if (map) {
+
+        // retain zoom level and center if same group is being viewed, else reset
+        if (currentGroup === group ) {
+            zoomLevel = map.getZoom()
+            viewCenter = map.getCenter()
+        }
+        // remove layers
         map = map.remove()
     }
-    loadMap(data)
+    loadMap(data, zoomLevel, viewCenter)
+    currentGroup = group
 }
 
-async function loadMap(data = null) {
+async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.650983264532163, 121.06718461639298]) {
 
     // initial data
     if (data == null) {
@@ -54,7 +68,7 @@ async function loadMap(data = null) {
     
     // initial map
     if (map==null) {
-        map = L.map('map').setView([14.650983264532163, 121.06718461639298], 12); // default center
+        map = L.map('map').setView(viewCenter, zoomLevel); // default center, and zoom level
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 18
@@ -136,8 +150,7 @@ async function loadMap(data = null) {
                 }
             )
             .bindPopup(
-                `<p>Date: ${i.date} <br/> Time: ${i.time} </p>`
-                // can add className option here for styling, see leaflet docs
+                `<p>Date: ${i.date} <br/> Time: ${i.time} <br/> Lat: ${i.latitude.toFixed(6)} <br/> Lng: ${i.longitude.toFixed(6)} </p>`
             ) 
             .addTo(map)
         allMarkers.push(circle)
