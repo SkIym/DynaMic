@@ -1,17 +1,26 @@
 /* style */
 
 * {
+    font-family: 'Source Sans Pro';
     margin: 0;
     font-family: sans-serif;
 }
 
+body {
+    background-color: #2b4141;
+    background-image: linear-gradient(#243b54, #181a24);
+}
 
 main {
-    padding: 10px;
+  padding: 10px;
+  margin-top: 8vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #title {
-    text-align: center;
+  text-align: center;
+  color: white;
 }
 
 #form {
@@ -25,24 +34,97 @@ main {
 }
 
 #map {
-    width: 100%;
-    height: 75vh;
+    width: 90%;
+    margin: auto auto;
+    height: 65vh;
     border: 2px dashed;
+    border-radius: 5px;
+    border-color: #34e4ea;
+    box-shadow: 0px 5px 0px 0px rgba(11, 11, 11, 0.2);
+}
+
+select, option {
+    padding: 5px;
+    color: white;
     border-radius: 5px;
     box-shadow: 0px 5px 0px 0px rgba(11, 11, 11, 0.2);
 }
 
-
-select, option {
-    padding: 5px;
-    color: black;
-    border-radius: 5px;
-    box-shadow: 0px 5px 0px 0px rgba(11, 11, 11, 0.2);
+.form-n-btn{
+    display: flex;
+    align-items: flex-end;
+    column-gap: 10px;
+    margin-right: 10px;
 }
 
 .select-group {
     display: inline-flex;
     flex-direction: column;
+}
+
+#group-select, #time-select{
+    color: #d9dce7;
+    background-color: #272e3f;
+    border-radius: 10px;
+    padding: 0.5em 1.5em;
+    border-width: 0px;
+}
+
+label{
+    font-size: x-small;
+    color: white;
+    margin-bottom: 4px;
+}
+
+
+/* topbar */
+
+.topbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  border-bottom: 1px ridge #0EB1D2;
+  background-color: #272e3f;
+  /* background-image: linear-gradient(180deg, #2B4141, #181a24); */
+  top: 0;
+  width: 100%;
+}
+
+.topbar li {
+  float: left;
+}
+
+.topbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 18px 24px;
+  text-decoration: none;
+}
+
+.dynamic {
+  display: block;
+  color: rgb(213, 206, 218);
+  text-align: center;
+  padding: 18px 24px 18px 0px;
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+.logo {
+     display: block;
+  text-align: center;
+  padding: 18px 14px 18px 24px;
+}
+
+.topbar li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #2c3855;
 }
 
 /* Modified leaflet classes */
@@ -56,7 +138,7 @@ select, option {
 }
 
 .markercluster-list {
-    background-color: rgb(255, 246, 235);
+    background-color: #e2dbc6;
 }
 
 .markercluster-list:has(div) {
@@ -65,17 +147,17 @@ select, option {
 }
 
 .markercluster-list .table-wrapper table tbody tr.cluster-list-row-even {
-    background-color: antiquewhite;
+    background-color: #c8c2ae;
     border-color: black;
 }
 
 .markercluster-list .table-wrapper table tbody tr.cluster-list-row-odd {
-    background-color: rgb(255, 246, 235);
+    background-color: #e2dbc6;
     border-color: black;
 }
 
 table {
-    background-color: rgb(255, 246, 235);
+    background-color: #e2dbc6;
     font-size: 0.9em;
 }
 
@@ -84,7 +166,7 @@ table {
 }
 
 .leaflet-popup-content-wrapper {
-    background-color: rgb(255, 246, 235);
+  background-color: #e2dbc6;
 }
 
 .cluster-list-side-panel-button {
