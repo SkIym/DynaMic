@@ -17,7 +17,7 @@ router = APIRouter(
 
 # Register an explosion (latitude, longitude, id,)
 @router.post("", response_model=Occurrence)
-async def register_explosion(occ: OccurrenceCreate):
+async def register_occurrence(occ: OccurrenceCreate):
     with Session(engine) as session:
 
         if not registered_buoy(session, occ.buoy_id):

@@ -1,6 +1,10 @@
+// Globals
 let map = null
 let defaultStartDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
+const form = document.getElementById('form')
+let currentGroup = 0
 
+// Map time filter to Date object
 const getStartDate = (time) => {
     const dateNow = new Date()
     switch (time) {
@@ -17,9 +21,7 @@ const getStartDate = (time) => {
     }
 }
 
-const form = document.getElementById('form')
-let currentGroup = 0
-
+// Get time and group filters from form data
 const getQueryFromForm = (form) => {
     const formData = new FormData(form)
     const time = formData.get("time")
@@ -29,16 +31,17 @@ const getQueryFromForm = (form) => {
     return [startDateISO, group]
 }
 
+// Reload map if form changes
 form.addEventListener('change', async function(event) {
     event.preventDefault()
     await reloadMap()
 })
 
 
+// Reload map by re-fetching occurrences
 const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
-    
     
     let zoomLevel = 12
     let viewCenter = [14.650983264532163, 121.06718461639298]
@@ -50,13 +53,16 @@ const reloadMap = async () => {
             zoomLevel = map.getZoom()
             viewCenter = map.getCenter()
         }
+
         // remove layers
         map = map.remove()
     }
+
     loadMap(data, zoomLevel, viewCenter)
     currentGroup = group
 }
 
+// Load map with data, zoom level, and view center
 async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.650983264532163, 121.06718461639298]) {
 
     // initial data
@@ -75,7 +81,6 @@ async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.65098326453
         }).addTo(map);
     }
     
-
     const blobSize = 20;
     const highlightColor = "#FF2400"
                 
@@ -92,6 +97,7 @@ async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.65098326453
         )
         .addTo(map);
 
+    // marker clusters for grouped occurrences
     let markers = L
         .markerClusterGroup
         .withList({
