@@ -1,6 +1,10 @@
+// Globals
 let map = null
 let defaultStartDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0))
+const form = document.getElementById('form')
+let currentGroup = 0
 
+// Map time filter to Date object
 const getStartDate = (time) => {
     const dateNow = new Date()
     switch (time) {
@@ -17,8 +21,7 @@ const getStartDate = (time) => {
     }
 }
 
-const form = document.getElementById('form')
-
+// Get time and group filters from form data
 const getQueryFromForm = (form) => {
     const formData = new FormData(form)
     const time = formData.get("time")
@@ -28,22 +31,39 @@ const getQueryFromForm = (form) => {
     return [startDateISO, group]
 }
 
-form.addEventListener('submit', async function(event) {
+// Reload map if form changes
+form.addEventListener('change', async function(event) {
     event.preventDefault()
     await reloadMap()
 })
 
+
+// Reload map by re-fetching occurrences
 const reloadMap = async () => {
     const [startDateISO, group] = getQueryFromForm(form)
     const data = await fetchOccurrences(startDateISO, group)
-    // remove layers
+    
+    let zoomLevel = 12
+    let viewCenter = [14.650983264532163, 121.06718461639298]
+
     if (map) {
+
+        // retain zoom level and center if same group is being viewed, else reset
+        if (currentGroup === group ) {
+            zoomLevel = map.getZoom()
+            viewCenter = map.getCenter()
+        }
+
+        // remove layers
         map = map.remove()
     }
-    loadMap(data)
+
+    loadMap(data, zoomLevel, viewCenter)
+    currentGroup = group
 }
 
-async function loadMap(data = null) {
+// Load map with data, zoom level, and view center
+async function loadMap(data = null, zoomLevel = 12, viewCenter = [14.650983264532163, 121.06718461639298]) {
 
     // initial data
     if (data == null) {
@@ -54,14 +74,13 @@ async function loadMap(data = null) {
     
     // initial map
     if (map==null) {
-        map = L.map('map').setView([14.650983264532163, 121.06718461639298], 12); // default center
+        map = L.map('map').setView(viewCenter, zoomLevel); // default center, and zoom level
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 18
         }).addTo(map);
     }
     
-
     const blobSize = 20;
     const highlightColor = "#FF2400"
                 
@@ -78,6 +97,7 @@ async function loadMap(data = null) {
         )
         .addTo(map);
 
+    // marker clusters for grouped occurrences
     let markers = L
         .markerClusterGroup
         .withList({
@@ -136,8 +156,7 @@ async function loadMap(data = null) {
                 }
             )
             .bindPopup(
-                `<p>Date: ${i.date} <br/> Time: ${i.time} </p>`
-                // can add className option here for styling, see leaflet docs
+                `<p>Date: ${i.date} <br/> Time: ${i.time} <br/> Lat: ${i.latitude.toFixed(6)} <br/> Lng: ${i.longitude.toFixed(6)} </p>`
             ) 
             .addTo(map)
         allMarkers.push(circle)

@@ -6,9 +6,7 @@ async function fetchOccurrences(iso_start_date = "", group = 0) {
                 group: group
             })
         )
-
         const data = await response.json()
- 
         return data
     }
     catch (error) {
