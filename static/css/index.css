@@ -124,12 +124,13 @@ label{
 }
 
 .active {
-  background-color: #2c3855;
+  background-color: #111;
 }
 
 /* Modified leaflet classes */
 
 .cluster-list-header p {
+    color: white;
     padding: 10px;
 }
 
@@ -138,7 +139,7 @@ label{
 }
 
 .markercluster-list {
-    background-color: #e2dbc6;
+    background-color: #111;
 }
 
 .markercluster-list:has(div) {
@@ -147,18 +148,19 @@ label{
 }
 
 .markercluster-list .table-wrapper table tbody tr.cluster-list-row-even {
-    background-color: #c8c2ae;
+    background-color: #272e3f;
     border-color: black;
 }
 
 .markercluster-list .table-wrapper table tbody tr.cluster-list-row-odd {
-    background-color: #e2dbc6;
+    background-color: #111;
     border-color: black;
 }
 
 table {
-    background-color: #e2dbc6;
+    background-color: #111;
     font-size: 0.9em;
+    color: white;
 }
 
 .table-wrapper {
@@ -166,12 +168,13 @@ table {
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: #e2dbc6;
+  background-color: #111;
+  color: white;
 }
 
 .cluster-list-side-panel-button {
-    background-color: transparent;
-    color: #757575;
+    background-color: #111;
+    color: white;
     font-size: large;
     text-align: center;
     line-height: 12px;
